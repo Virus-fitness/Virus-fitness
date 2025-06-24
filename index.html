@@ -1,0 +1,579 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Virus Fitness - Best gym in Islamabad G-10/1 for weight training, group classes, and personal training. Join www.virusfitness.com now!">
+    <meta name="keywords" content="Virus Fitness, gym in Islamabad, fitness center G-10, workout, personal training, muscle gain, desi diet">
+    <meta name="author" content="Virus Fitness">
+    <title>Virus Fitness - Best Gym in Islamabad G-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+        }
+        header {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+        }
+        nav {
+            background: #333;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 1rem;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+        .hero {
+            background: url('https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        .section {
+            padding: 2rem;
+            text-align: center;
+        }
+        .section h2 {
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-size: 2rem;
+        }
+        .services {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .service-card {
+            width: 30%;
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+        .pricing {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .price-card {
+            width: 25%;
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .contact-form button {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .contact-form button:hover {
+            background: #ffcc00;
+            color: #1a1a1a;
+        }
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            .service-card, .price-card {
+                width: 80%;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Virus Fitness</h1>
+        <p>Best Gym in Islamabad G-10</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <section id="home" class="hero">
+        <h2>Join Virus Fitness Today!</h2>
+    </section>
+    <section id="about" class="section">
+        <h2>About Virus Fitness</h2>
+        <p>Founded by Mateen Ahmed, Virus Fitness is Islamabad’s premier gym located in G-10/1. We offer modern equipment, expert trainers, and a community to help you achieve your fitness goals. Visit www.virusfitness.com to start your journey!</p>
+    </section>
+    <section id="services" class="section">
+        <h2>Our Services</h2>
+        <div class="services">
+            <div class="service-card">
+                <h3>Personal Training</h3>
+                <p>Customized one-on-one sessions with certified trainers.</p>
+            </div>
+            <div class="service-card">
+                <h3>Group Classes</h3>
+                <p>Zumba, HIIT, and Yoga classes for all fitness levels.</p>
+            </div>
+            <div class="service-card">
+                <h3>Weight Training</h3>
+                <p>State-of-the-art equipment for strength and muscle gain.</p>
+            </div>
+            <div class="service-card">
+                <h3>Desi Diet Plans</h3>
+                <p>Build muscle with whole foods like oats, eggs, and chicken.</p>
+            </div>
+        </div>
+    </section>
+    <section id="pricing" class="section">
+        <h2>Pricing</h2>
+        <div class="pricing">
+            <div class="price-card">
+                <h3>Monthly Membership</h3>
+                <p>PKR 2500</p>
+                <p>Unlimited gym access</p>
+            </div>
+            <div class="price-card">
+                <h3>Annual Membership</h3>
+                <p>PKR 25,000</p>
+                <p>Save 15% + Free PT Session</p>
+            </div>
+            <div class="price-card">
+                <h3>Personal Training</h3>
+                <p>PKR 5000/month</p>
+                <p>Customized workout plans</p>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="section">
+        <h2>Contact Us</h2>
+        <p>Address: G-10/1, Islamabad, Pakistan</p>
+        <p>Phone: +92 326 4779060</p>
+        <p>Email: virusfitnee@gmail.com</p>
+        <p>Open: 6 AM - 10 PM (Closed during Juma prayers)</p>
+        <div class="contact-form">
+            <form action="https://formspree.io/f/your-form-id" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <a href="https://wa.me/+923264779060" target="_blank" class="whatsapp-btn">Chat on WhatsApp</a>
+    </section>
+    <footer>
+        <p>© 2025 Virus Fitness. All Rights Reserved.</p>
+        <p>Follow us: <a href="https://instagram.com/virusfitness">Instagram</a> | <a href="https://facebook.com/virusfitness">Facebook</a></p>
+        <p>Visit us at <a href="https://www.virusfitness.com">www.virus
+
+System: Sorry, yaar, response phir cut ho gaya! 😅 Main complete karta hoon aur **Virus Fitness** ke liye **www.virusfitness.com** wala website code finalize karta hoon. Tumne bataya ke gym ka naam **Virus Fitness** hai, location **G-10/1, Islamabad**, owner **Mateen Ahmed**, email **virusfitnee@gmail.com**, aur phone **+92 3264779060**. Tum free website chahte ho coding ke through, aur domain **www.virusfitness.com** hona chahiye. Maine pehle wala code update kiya hai (same artifact_id rakha as per instructions) to include your domain and other details. Plus, main free hosting aur custom domain setup ke steps clear karunga. Chalo, shuru se complete karte hain! 💪
+
+### Updated Virus Fitness Website Code
+Yeh code **www.virusfitness.com** ke liye tailored hai, with:
+- **Your Details**: Virus Fitness, G-10/1, Mateen Ahmed, email, phone.
+- **SEO**: Optimized for “gym in Islamabad G-10” searches.
+- **Desi Diet**: Section added as per your preference for natural diet plans (oats, eggs, etc.).
+- **Prayer Timings**: Juma prayer closure mentioned.
+- **WhatsApp**: Button for quick contact.
+- **Responsive**: Mobile aur desktop pe perfect dikhega.
+
+<xaiArtifact artifact_id="9535037f-7471-4a52-af9f-4ea9a03ad932" artifact_version_id="bf643940-40dd-47da-899b-6dbeb9040696" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Virus Fitness - Best gym in Islamabad G-10/1 for weight training, group classes, and personal training. Join www.virusfitness.com now!">
+    <meta name="keywords" content="Virus Fitness, gym in Islamabad, fitness center G-10, workout, personal training, muscle gain, desi diet">
+    <meta name="author" content="Virus Fitness">
+    <title>Virus Fitness - Best Gym in Islamabad G-10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+        }
+        header {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+        }
+        nav {
+            background: #333;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 1rem;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+        .hero {
+            background: url('https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        .section {
+            padding: 2rem;
+            text-align: center;
+        }
+        .section h2 {
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+            font-size: 2rem;
+        }
+        .services {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .service-card {
+            width: 30%;
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+        .pricing {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .price-card {
+            width: 25%;
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .contact-form button {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .contact-form button:hover {
+            background: #ffcc00;
+            color: #1a1a1a;
+        }
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            .service-card, .price-card {
+                width: 80%;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Virus Fitness</h1>
+        <p>Best Gym in Islamabad G-10</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <section id="home" class="hero">
+        <h2>Join Virus Fitness Today!</h2>
+    </section>
+    <section id="about" class="section">
+        <h2>About Virus Fitness</h2>
+        <p>Founded by Mateen Ahmed, Virus Fitness is Islamabad’s premier gym located in G-10/1. We offer modern equipment, expert trainers, and a community to help you achieve your fitness goals. Visit www.virusfitness.com to start your journey!</p>
+    </section>
+    <section id="services" class="section">
+        <h2>Our Services</h2>
+        <div class="services">
+            <div class="service-card">
+                <h3>Personal Training</h3>
+                <p>Customized one-on-one sessions with certified trainers.</p>
+            </div>
+            <div class="service-card">
+                <h3>Group Classes</h3>
+                <p>Zumba, HIIT, and Yoga classes for all fitness levels.</p>
+            </div>
+            <div class="service-card">
+                <h3>Weight Training</h3>
+                <p>State-of-the-art equipment for strength and muscle gain.</p>
+            </div>
+            <div class="service-card">
+                <h3>Desi Diet Plans</h3>
+                <p>Build muscle with whole foods like oats, eggs, and chicken.</p>
+            </div>
+        </div>
+    </section>
+    <section id="pricing" class="section">
+        <h2>Pricing</h2>
+        <div class="pricing">
+            <div class="price-card">
+                <h3>Monthly Membership</h3>
+                <p>PKR 2500</p>
+                <p>Unlimited gym access</p>
+            </div>
+            <div class="price-card">
+                <h3>Annual Membership</h3>
+                <p>PKR 25,000</p>
+                <p>Save 15% + Free PT Session</p>
+            </div>
+            <div class="price-card">
+                <h3>Personal Training</h3>
+                <p>PKR 5000/month</p>
+                <p>Customized workout plans</p>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="section">
+        <h2>Contact Us</h2>
+        <p>Address: G-10/1, Islamabad, Pakistan</p>
+        <p>Phone: +92 326 4779060</p>
+        <p>Email: virusfitnee@gmail.com</p>
+        <p>Open: 6 AM - 10 PM (Closed during Juma prayers)</p>
+        <div class="contact-form">
+            <form action="https://formspree.io/f/your-form-id" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <a href="https://wa.me/+923264779060" target="_blank" class="whatsapp-btn">Chat on WhatsApp</a>
+    </section>
+    <footer>
+        <p>© 2025 Virus Fitness. All Rights Reserved.</p>
+        <p>Follow us: <a href="https://instagram.com/virusfitness">Instagram</a> | <a href="https://facebook.com/virusfitness">Facebook</a></p>
+        <p>Visit us at <a href="https://www.virusfitness.com">www.virusfitness.com</a></p>
+    </footer>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        // Alert for form submission (replace with actual backend later)
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We’ll get back to you soon.');
+        });
+    </script>
+</body>
+</html>
